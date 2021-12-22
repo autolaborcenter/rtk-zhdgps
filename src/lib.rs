@@ -1,3 +1,4 @@
+use bestposa::BestPosa;
 use driver::Driver;
 use serial_port::{Port, PortKey, SerialPort};
 use std::{
@@ -20,7 +21,7 @@ pub struct ZhdH2 {
 }
 
 pub enum ZhdH2Msg {
-    BestPosa(u16, f32, String),
+    BestPosa(BestPosa),
     Gpgga(String),
 }
 
@@ -76,8 +77,8 @@ impl Driver for ZhdH2 {
         loop {
             if let Some(line) = self.buf.parse() {
                 time = self.last_time;
-                let event = if let Some(msg) = bestposa::split(line) {
-                    Some((time, msg))
+                let event = if let Some(data) = BestPosa::from(line) {
+                    Some((time, ZhdH2Msg::BestPosa(data)))
                 } else if line.starts_with("$GPGGA,") {
                     Some((time, ZhdH2Msg::Gpgga(format!("{}\r\n", line))))
                 } else {
