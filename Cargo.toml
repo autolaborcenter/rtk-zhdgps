@@ -10,12 +10,12 @@ driver = { path = "../driver" }
 serial-port = { path = "../serial-port" }
 gnss = { path = "../gnss" }
 base64 = "*"
-async-std = "*"
 
+async-std = { version = "*", optional = true }
 monitor-tool = { path = "../monitor-tool-rs", optional = true, default-features = false }
 
 [features]
-display = ["monitor-tool/sender"]
+display = ["monitor-tool/sender", "async-std"]
 
 [[bin]]
 name = "display"
