@@ -1,0 +1,22 @@
+[package]
+name = "rtk-zhdgps"
+version = "0.1.0"
+edition = "2021"
+authors = ["YdrMaster <ydrml@hotmail.com>"]
+readme = "README.md"
+
+[dependencies]
+driver = { path = "../driver" }
+serial-port = { path = "../serial-port" }
+gnss = { path = "../gnss" }
+base64 = "*"
+async-std = "*"
+
+monitor-tool = { path = "../monitor-tool-rs", optional = true, default-features = false }
+
+[features]
+display = ["monitor-tool/sender"]
+
+[[bin]]
+name = "display"
+required-features = ["display"]
